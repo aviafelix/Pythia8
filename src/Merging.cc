@@ -37,7 +37,7 @@ void Merging::init(){
 void Merging::statistics() {
 
   // Recall switch to enfore merging scale cut.
-  bool enforceCutOnLHE  = settingsPtr->flag("Merging:enforceCutOnLHE");
+  bool enforceCutOnLHE  = flag("Merging:enforceCutOnLHE");
   // Recall merging scale value.
   double tmsval         = mergingHooksPtr->tms();
   bool printBanner      = enforceCutOnLHE && tmsNowMin > TMSMISMATCH*tmsval;
@@ -73,66 +73,36 @@ int Merging::mergeProcess(Event& process){
 
   // Reinitialise hard process.
   mergingHooksPtr->hardProcess->clear();
-  mergingHooksPtr->processNow  = settingsPtr->word("Merging:Process");
+  mergingHooksPtr->processSave = word("Merging:Process");
   mergingHooksPtr->hardProcess->initOnProcess(
-    mergingHooksPtr->processNow, particleDataPtr);
-  settingsPtr->word("Merging:Process", mergingHooksPtr->processSave);
+    word("Merging:Process"), particleDataPtr);
 
-  mergingHooksPtr->doUserMergingSave
-    = settingsPtr->flag("Merging:doUserMerging");
-  mergingHooksPtr->doMGMergingSave
-    = settingsPtr->flag("Merging:doMGMerging");
-  mergingHooksPtr->doKTMergingSave
-    = settingsPtr->flag("Merging:doKTMerging");
-  mergingHooksPtr->doPTLundMergingSave
-    = settingsPtr->flag("Merging:doPTLundMerging");
-  mergingHooksPtr->doCutBasedMergingSave
-    = settingsPtr->flag("Merging:doCutBasedMerging");
-  mergingHooksPtr->doNL3TreeSave
-    = settingsPtr->flag("Merging:doNL3Tree");
-  mergingHooksPtr->doNL3LoopSave
-    = settingsPtr->flag("Merging:doNL3Loop");
-  mergingHooksPtr->doNL3SubtSave
-    = settingsPtr->flag("Merging:doNL3Subt");
-  mergingHooksPtr->doUNLOPSTreeSave
-    = settingsPtr->flag("Merging:doUNLOPSTree");
-  mergingHooksPtr->doUNLOPSLoopSave
-    = settingsPtr->flag("Merging:doUNLOPSLoop");
-  mergingHooksPtr->doUNLOPSSubtSave
-    = settingsPtr->flag("Merging:doUNLOPSSubt");
-  mergingHooksPtr->doUNLOPSSubtNLOSave
-    = settingsPtr->flag("Merging:doUNLOPSSubtNLO");
-  mergingHooksPtr->doUMEPSTreeSave
-    = settingsPtr->flag("Merging:doUMEPSTree");
-  mergingHooksPtr->doUMEPSSubtSave
-    = settingsPtr->flag("Merging:doUMEPSSubt");
-  mergingHooksPtr->nReclusterSave
-    = settingsPtr->mode("Merging:nRecluster");
+  mergingHooksPtr->doUserMergingSave = flag("Merging:doUserMerging");
+  mergingHooksPtr->doMGMergingSave = flag("Merging:doMGMerging");
+  mergingHooksPtr->doKTMergingSave = flag("Merging:doKTMerging");
+  mergingHooksPtr->doPTLundMergingSave = flag("Merging:doPTLundMerging");
+  mergingHooksPtr->doCutBasedMergingSave = flag("Merging:doCutBasedMerging");
+  mergingHooksPtr->doNL3TreeSave = flag("Merging:doNL3Tree");
+  mergingHooksPtr->doNL3LoopSave = flag("Merging:doNL3Loop");
+  mergingHooksPtr->doNL3SubtSave = flag("Merging:doNL3Subt");
+  mergingHooksPtr->doUNLOPSTreeSave = flag("Merging:doUNLOPSTree");
+  mergingHooksPtr->doUNLOPSLoopSave = flag("Merging:doUNLOPSLoop");
+  mergingHooksPtr->doUNLOPSSubtSave = flag("Merging:doUNLOPSSubt");
+  mergingHooksPtr->doUNLOPSSubtNLOSave = flag("Merging:doUNLOPSSubtNLO");
+  mergingHooksPtr->doUMEPSTreeSave = flag("Merging:doUMEPSTree");
+  mergingHooksPtr->doUMEPSSubtSave = flag("Merging:doUMEPSSubt");
+  mergingHooksPtr->nReclusterSave = mode("Merging:nRecluster");
 
   mergingHooksPtr->hasJetMaxLocal  = false;
-  mergingHooksPtr->nJetMaxLocal
-    = mergingHooksPtr->nJetMaxSave;
-  mergingHooksPtr->nJetMaxNLOLocal
-    = mergingHooksPtr->nJetMaxNLOSave;
-  int nRequestedNow = settingsPtr->mode("Merging:nRequested");
-  if ( mergingHooksPtr->getProcessString().compare("pp>aj") != 0
-    && mergingHooksPtr->getProcessString().compare("pp>jj") != 0) {
-    int sizeOut1 = mergingHooksPtr->hardProcess->hardOutgoing1.size();
-    int sizeOut2 = mergingHooksPtr->hardProcess->hardOutgoing2.size();
-    for (int i=0; i < sizeOut1; ++i)
-      if (mergingHooksPtr->hardProcess->hardOutgoing1[i] == 2212)
-        nRequestedNow--;
-    for (int i=0; i < sizeOut2; ++i)
-      if (mergingHooksPtr->hardProcess->hardOutgoing2[i] == 2212)
-        nRequestedNow--;
-  }
-  mergingHooksPtr->nRequestedSave = nRequestedNow;
+  mergingHooksPtr->nJetMaxLocal = mergingHooksPtr->nJetMaxSave;
+  mergingHooksPtr->nJetMaxNLOLocal = mergingHooksPtr->nJetMaxNLOSave;
+  mergingHooksPtr->nRequestedSave = mode("Merging:nRequested");
 
   // Ensure that merging weight is not counted twice.
   bool includeWGT = mergingHooksPtr->includeWGTinXSEC();
 
   // Possibility to apply merging scale to an input event.
-  bool applyTMSCut = settingsPtr->flag("Merging:doXSectionEstimate");
+  bool applyTMSCut = flag("Merging:doXSectionEstimate");
   if ( applyTMSCut && cutOnProcess(process) ) {
     if (includeWGT) infoPtr->updateWeight(0.);
     return -1;
@@ -202,7 +172,7 @@ int Merging::mergeProcessCKKWL( Event& process) {
   int nSteps = mergingHooksPtr->getNumberOfClusteringSteps( newProcess, true);
 
   // Check if hard event cut should be applied later.
-  bool applyVeto = settingsPtr->flag("Merging:applyVeto");
+  bool applyVeto = flag("Merging:applyVeto");
 
   // Too few steps can be possible if a chain of resonance decays has been
   // removed. In this case, reject this event, since it will be handled in
@@ -219,6 +189,7 @@ int Merging::mergeProcessCKKWL( Event& process) {
     if ( includeWGT) infoPtr->updateWeight(0.);
     if (applyVeto) return -1;
     else return 1;
+    //return -1;
   }
 
   // Reset the minimal tms value, if necessary.
@@ -248,13 +219,14 @@ int Merging::mergeProcessCKKWL( Event& process) {
 
   // Enfore merging scale cut if the event did not pass the merging scale
   // criterion.
-  bool enforceCutOnLHE  = settingsPtr->flag("Merging:enforceCutOnLHE");
+  bool enforceCutOnLHE  = flag("Merging:enforceCutOnLHE");
   if ( enforceCutOnLHE && applyCut && tmsnow < tmsval && tmsnow >= 0. ) {
     string message="Warning in Merging::mergeProcessCKKWL: Les Houches Event";
     message+=" fails merging scale cut. Reject event.";
     infoPtr->errorMsg(message);
     if (!includeWGT) mergingHooksPtr->setWeightCKKWL(0.);
     if ( includeWGT) infoPtr->updateWeight(0.);
+    //return -1;
     if (applyVeto) return -1;
     else return 1;
   }
@@ -277,6 +249,7 @@ int Merging::mergeProcessCKKWL( Event& process) {
 
   bool complete = (FullHistory.select(RN)->nClusterings() == nSteps) ||
     ( mergingHooksPtr->doWeakClustering() && nFinalP == 2 && nFinalW == 0 );
+
   if ( !complete ) {
     string message="Warning in Merging::mergeProcessCKKWL: No clusterings";
     message+=" found. History incomplete.";
@@ -331,11 +304,11 @@ int Merging::mergeProcessCKKWL( Event& process) {
 int Merging::mergeProcessUMEPS( Event& process) {
 
   // Initialise which part of UMEPS merging is applied.
-  bool doUMEPSTree                = settingsPtr->flag("Merging:doUMEPSTree");
-  bool doUMEPSSubt                = settingsPtr->flag("Merging:doUMEPSSubt");
+  bool doUMEPSTree                = flag("Merging:doUMEPSTree");
+  bool doUMEPSSubt                = flag("Merging:doUMEPSSubt");
   // Save number of looping steps
-  mergingHooksPtr->nReclusterSave = settingsPtr->mode("Merging:nRecluster");
-  int nRecluster                  = settingsPtr->mode("Merging:nRecluster");
+  mergingHooksPtr->nReclusterSave = mode("Merging:nRecluster");
+  int nRecluster                  = mode("Merging:nRecluster");
 
   // Ensure that merging hooks does not remove emissions.
   mergingHooksPtr->doIgnoreEmissions(true);
@@ -375,7 +348,7 @@ int Merging::mergeProcessUMEPS( Event& process) {
   int nRequested = mergingHooksPtr->nRequested();
 
   // Check if hard event cut should be applied later.
-  bool applyVeto = settingsPtr->flag("Merging:applyVeto");
+  bool applyVeto = flag("Merging:applyVeto");
 
   // Too few steps can be possible if a chain of resonance decays has been
   // removed. In this case, reject this event, since it will be handled in
@@ -407,7 +380,7 @@ int Merging::mergeProcessUMEPS( Event& process) {
 
   // Enfore merging scale cut if the event did not pass the merging scale
   // criterion.
-  bool enforceCutOnLHE  = settingsPtr->flag("Merging:enforceCutOnLHE");
+  bool enforceCutOnLHE  = flag("Merging:enforceCutOnLHE");
   if ( enforceCutOnLHE && applyCut && tmsnow < tmsval ) {
     string message="Warning in Merging::mergeProcessUMEPS: Les Houches Event";
     message+=" fails merging scale cut. Reject event.";
@@ -511,9 +484,9 @@ int Merging::mergeProcessUMEPS( Event& process) {
 int Merging::mergeProcessNL3( Event& process) {
 
   // Initialise which part of NL3 merging is applied.
-  bool doNL3Tree = settingsPtr->flag("Merging:doNL3Tree");
-  bool doNL3Loop = settingsPtr->flag("Merging:doNL3Loop");
-  bool doNL3Subt = settingsPtr->flag("Merging:doNL3Subt");
+  bool doNL3Tree = flag("Merging:doNL3Tree");
+  bool doNL3Loop = flag("Merging:doNL3Loop");
+  bool doNL3Subt = flag("Merging:doNL3Subt");
 
   // Ensure that hooks (NL3 part) to not remove emissions.
   mergingHooksPtr->doIgnoreEmissions(true);
@@ -563,7 +536,7 @@ int Merging::mergeProcessNL3( Event& process) {
 
   // Enfore merging scale cut if the event did not pass the merging scale
   // criterion.
-  bool enforceCutOnLHE  = settingsPtr->flag("Merging:enforceCutOnLHE");
+  bool enforceCutOnLHE  = flag("Merging:enforceCutOnLHE");
   if ( enforceCutOnLHE && nSteps > 0 && nSteps == nRequested
     && tmsnow < tmsval ) {
     string message="Warning in Merging::mergeProcessNL3: Les Houches Event";
@@ -735,14 +708,14 @@ int Merging::mergeProcessNL3( Event& process) {
 int Merging::mergeProcessUNLOPS( Event& process) {
 
   // Initialise which part of UNLOPS merging is applied.
-  bool nloTilde         = settingsPtr->flag("Merging:doUNLOPSTilde");
-  bool doUNLOPSTree     = settingsPtr->flag("Merging:doUNLOPSTree");
-  bool doUNLOPSLoop     = settingsPtr->flag("Merging:doUNLOPSLoop");
-  bool doUNLOPSSubt     = settingsPtr->flag("Merging:doUNLOPSSubt");
-  bool doUNLOPSSubtNLO  = settingsPtr->flag("Merging:doUNLOPSSubtNLO");
+  bool nloTilde         = flag("Merging:doUNLOPSTilde");
+  bool doUNLOPSTree     = flag("Merging:doUNLOPSTree");
+  bool doUNLOPSLoop     = flag("Merging:doUNLOPSLoop");
+  bool doUNLOPSSubt     = flag("Merging:doUNLOPSSubt");
+  bool doUNLOPSSubtNLO  = flag("Merging:doUNLOPSSubtNLO");
   // Save number of looping steps
-  mergingHooksPtr->nReclusterSave = settingsPtr->mode("Merging:nRecluster");
-  int nRecluster        = settingsPtr->mode("Merging:nRecluster");
+  mergingHooksPtr->nReclusterSave = mode("Merging:nRecluster");
+  int nRecluster        = mode("Merging:nRecluster");
 
   // Ensure that merging hooks to not remove emissions
   mergingHooksPtr->doIgnoreEmissions(true);
@@ -752,9 +725,6 @@ int Merging::mergeProcessUNLOPS( Event& process) {
   // can be clustered to gg > h
   if ( mergingHooksPtr->getProcessString().compare("pp>h") == 0)
     mergingHooksPtr->allowCutOnRecState(true);
-
-  // Ensure that merging weight is not counted twice.
-  bool includeWGT = mergingHooksPtr->includeWGTinXSEC();
 
   // Reset weight of the event.
   double wgt      = 1.;
@@ -779,10 +749,8 @@ int Merging::mergeProcessUNLOPS( Event& process) {
   int nSteps = mergingHooksPtr->getNumberOfClusteringSteps( newProcess, true);
   int nRequested = mergingHooksPtr->nRequested();
 
-  mergingHooksPtr->nInProcessNow = nSteps;
-
   // Check if hard event cut should be applied later.
-  bool allowReject = settingsPtr->flag("Merging:applyVeto");
+  bool allowReject = flag("Merging:applyVeto");
 
   // Too few steps can be possible if a chain of resonance decays has been
   // removed. In this case, reject this event, since it will be handled in
@@ -793,7 +761,6 @@ int Merging::mergeProcessUNLOPS( Event& process) {
     infoPtr->errorMsg(message);
     mergingHooksPtr->setWeightCKKWL(0.);
     mergingHooksPtr->setWeightFIRST(0.);
-    if ( includeWGT) infoPtr->updateWeight(0.);
     return ((allowReject)? -1 : 1);
   }
 
@@ -817,7 +784,7 @@ int Merging::mergeProcessUNLOPS( Event& process) {
 
   // Enfore merging scale cut if the event did not pass the merging scale
   // criterion.
-  bool enforceCutOnLHE  = settingsPtr->flag("Merging:enforceCutOnLHE");
+  bool enforceCutOnLHE  = flag("Merging:enforceCutOnLHE");
   if ( enforceCutOnLHE && applyCut && nSteps == nRequested
     && tmsnow < tmsval ) {
     string message="Warning in Merging::mergeProcessUNLOPS: Les Houches";
@@ -825,7 +792,6 @@ int Merging::mergeProcessUNLOPS( Event& process) {
     infoPtr->errorMsg(message);
     mergingHooksPtr->setWeightCKKWL(0.);
     mergingHooksPtr->setWeightFIRST(0.);
-    if ( includeWGT) infoPtr->updateWeight(0.);
     return ((allowReject)? -1 : 1);
     //return -1;
   }
@@ -838,13 +804,11 @@ int Merging::mergeProcessUNLOPS( Event& process) {
   // Remove real emission events without underlying Born configuration from
   // the loop sample, since such states will be taken care of by tree-level
   // samples.
-  bool allowIncompleteReal =
-    settingsPtr->flag("Merging:allowIncompleteHistoriesInReal");
+  bool allowIncompleteReal = flag("Merging:allowIncompleteHistoriesInReal");
   if ( doUNLOPSLoop && containsRealKin && !allowIncompleteReal
     && FullHistory.select(RN)->nClusterings() == 0 ) {
     mergingHooksPtr->setWeightCKKWL(0.);
     mergingHooksPtr->setWeightFIRST(0.);
-    if ( includeWGT) infoPtr->updateWeight(0.);
     return ((allowReject)? -1 : 1);
     //return -1;
   }
@@ -857,7 +821,6 @@ int Merging::mergeProcessUNLOPS( Event& process) {
           newProcess, nPerformed, false ) ) {
     mergingHooksPtr->setWeightCKKWL(0.);
     mergingHooksPtr->setWeightFIRST(0.);
-    if ( includeWGT) infoPtr->updateWeight(0.);
     return ((allowReject)? -1 : 1);
     //return -1;
   }
@@ -884,7 +847,8 @@ int Merging::mergeProcessUNLOPS( Event& process) {
       infoPtr->errorMsg(message);
       mergingHooksPtr->setWeightCKKWL(0.);
       mergingHooksPtr->setWeightFIRST(0.);
-      if ( includeWGT) infoPtr->updateWeight(0.);
+
+
       return ((allowReject)? -1 : 1);
       //return -1;
     }
@@ -1052,10 +1016,6 @@ int Merging::mergeProcessUNLOPS( Event& process) {
   // If necessary, reattach resonance decay products.
   if (!hasNewResonances) mergingHooksPtr->reattachResonanceDecays(process);
 
-  // Update the event weight.
-  double norm = (abs(infoPtr->lhaStrategy()) == 4) ? 1/1e9 : 1.;
-  if ( includeWGT) infoPtr->updateWeight(infoPtr->weight()*wgt*norm);
-
   // Allow merging hooks to remove emissions from now on.
   mergingHooksPtr->doIgnoreEmissions(false);
 
@@ -1079,7 +1039,7 @@ int Merging::mergeProcessUNLOPS( Event& process) {
 bool Merging::cutOnProcess( Event& process) {
 
   // Save number of looping steps
-  mergingHooksPtr->nReclusterSave = settingsPtr->mode("Merging:nRecluster");
+  mergingHooksPtr->nReclusterSave = mode("Merging:nRecluster");
 
   // For now, prefer construction of ordered histories.
   mergingHooksPtr->orderHistories(true);
@@ -1134,8 +1094,7 @@ bool Merging::cutOnProcess( Event& process) {
   // Remove real emission events without underlying Born configuration from
   // the loop sample, since such states will be taken care of by tree-level
   // samples.
-  bool allowIncompleteReal =
-    settingsPtr->flag("Merging:allowIncompleteHistoriesInReal");
+  bool allowIncompleteReal = flag("Merging:allowIncompleteHistoriesInReal");
   if ( containsRealKin && !allowIncompleteReal
     && FullHistory.select(RN)->nClusterings() == 0 )
     return true;

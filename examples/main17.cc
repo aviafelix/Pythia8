@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: userhooks; onia; external decays;
+
 // This is a simple test program.
 // It illustrates
 // (a) how to use UserHooks to regularize onium cross section for pT -> 0,
@@ -121,11 +123,11 @@ int main() {
   // Third argument: choice of process scale two different ways;
   // probably does not make much difference.
   // See "User Hooks" in manual for detail on SuppressSmallPT.
-  UserHooks* oniumUserHook = new SuppressSmallPT( 1., 3, false);
+  auto oniumUserHook = make_shared<SuppressSmallPT>( 1., 3, false);
   pythia.setUserHooksPtr( oniumUserHook);
 
   // A class to do J/psi decays externally.
-  DecayHandler* handleDecays = new JpsiDecay(&pythia.particleData,
+  DecayHandlerPtr handleDecays = make_shared<JpsiDecay>(&pythia.particleData,
     &pythia.rndm);
 
   // The list of particles the class can handle.
@@ -188,7 +190,5 @@ int main() {
   cout << pThard << pTJPsi;
 
   // Done.
-  delete handleDecays;
-  delete oniumUserHook;
   return 0;
 }

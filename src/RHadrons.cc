@@ -47,25 +47,19 @@ const double RHadrons::EGBORROWMAX = 4.;
 
 // Main routine to initialize R-hadron handling.
 
-bool RHadrons::init( Info* infoPtrIn, Settings& settings,
-  ParticleData* particleDataPtrIn, Rndm* rndmPtrIn) {
-
-  // Store input pointers for future use.
-  infoPtr          = infoPtrIn;
-  particleDataPtr  = particleDataPtrIn;
-  rndmPtr          = rndmPtrIn;
+bool RHadrons::init() {
 
   // Flags and parameters related to R-hadron formation and decay.
-  allowRH          = settings.flag("RHadrons:allow");
-  maxWidthRH       = settings.parm("RHadrons:maxWidth");
-  idRSb            = settings.mode("RHadrons:idSbottom");
-  idRSt            = settings.mode("RHadrons:idStop");
-  idRGo            = settings.mode("RHadrons:idGluino");
-  setMassesRH      = settings.flag("RHadrons:setMasses");
-  probGluinoballRH = settings.parm("RHadrons:probGluinoball");
-  mOffsetCloudRH   = settings.parm("RHadrons:mOffsetCloud");
-  mCollapseRH      = settings.parm("RHadrons:mCollapse");
-  diquarkSpin1RH   = settings.parm("RHadrons:diquarkSpin1");
+  allowRH          = flag("RHadrons:allow");
+  maxWidthRH       = parm("RHadrons:maxWidth");
+  idRSb            = mode("RHadrons:idSbottom");
+  idRSt            = mode("RHadrons:idStop");
+  idRGo            = mode("RHadrons:idGluino");
+  setMassesRH      = flag("RHadrons:setMasses");
+  probGluinoballRH = parm("RHadrons:probGluinoball");
+  mOffsetCloudRH   = parm("RHadrons:mOffsetCloud");
+  mCollapseRH      = parm("RHadrons:mCollapse");
+  diquarkSpin1RH   = parm("RHadrons:diquarkSpin1");
 
   // Check whether sbottom, stop or gluino should form R-hadrons.
   allowRSb         = allowRH && idRSb > 0

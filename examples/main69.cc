@@ -3,6 +3,10 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Authors: Ilkka Helenius <ilkka.m.helenius@jyu.fi>.
+
+// Keywords: photon beam; photoproduction; photon-photon;
+
 // Main program to generate charged hadron spectra from photon-initiated
 // hard processes, by combining sub-runs with direct or resolved photons
 // or by generating all with contributions in a single run.
@@ -42,8 +46,8 @@ int main() {
   pythia.readString("Next:numberShowEvent = 0");
 
   // Shorthand for some public members of pythia (also static ones).
-  Settings& settings = pythia.settings;
-  Info& info         = pythia.info;
+  Settings& settings  = pythia.settings;
+  const Info& info = pythia.info;
 
   // Photon-proton collisions.
   bool photonProton         = false;

@@ -104,21 +104,21 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
   beamBPtr        = beamBPtrIn;
 
   // Main flags to switch on and off branchings.
-  doQCDshower     = settingsPtr->flag("SpaceShower:QCDshower");
-  doQEDshowerByQ  = settingsPtr->flag("SpaceShower:QEDshowerByQ");
-  doQEDshowerByL  = settingsPtr->flag("SpaceShower:QEDshowerByL");
-  doWeakShower    = settingsPtr->flag("SpaceShower:WeakShower");
+  doQCDshower     = flag("SpaceShower:QCDshower");
+  doQEDshowerByQ  = flag("SpaceShower:QEDshowerByQ");
+  doQEDshowerByL  = flag("SpaceShower:QEDshowerByL");
+  doWeakShower    = flag("SpaceShower:WeakShower");
 
   // Matching in pT of hard interaction to shower evolution.
-  pTmaxMatch      = settingsPtr->mode("SpaceShower:pTmaxMatch");
-  pTdampMatch     = settingsPtr->mode("SpaceShower:pTdampMatch");
-  pTmaxFudge      = settingsPtr->parm("SpaceShower:pTmaxFudge");
-  pTmaxFudgeMPI   = settingsPtr->parm("SpaceShower:pTmaxFudgeMPI");
-  pTdampFudge     = settingsPtr->parm("SpaceShower:pTdampFudge");
+  pTmaxMatch      = mode("SpaceShower:pTmaxMatch");
+  pTdampMatch     = mode("SpaceShower:pTdampMatch");
+  pTmaxFudge      = parm("SpaceShower:pTmaxFudge");
+  pTmaxFudgeMPI   = parm("SpaceShower:pTmaxFudgeMPI");
+  pTdampFudge     = parm("SpaceShower:pTdampFudge");
 
   // Optionally force emissions to be ordered in rapidity/angle.
-  doRapidityOrder    = settingsPtr->flag("SpaceShower:rapidityOrder");
-  doRapidityOrderMPI = settingsPtr->flag("SpaceShower:rapidityOrderMPI");
+  doRapidityOrder    = flag("SpaceShower:rapidityOrder");
+  doRapidityOrderMPI = flag("SpaceShower:rapidityOrderMPI");
 
   // Charm, bottom and lepton mass thresholds.
   mc              = max( MCMIN, particleDataPtr->m0(4));
@@ -127,16 +127,16 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
   m2b             = pow2(mb);
 
   // Parameters of scale choices.
-  renormMultFac     = settingsPtr->parm("SpaceShower:renormMultFac");
-  factorMultFac     = settingsPtr->parm("SpaceShower:factorMultFac");
-  useFixedFacScale  = settingsPtr->flag("SpaceShower:useFixedFacScale");
-  fixedFacScale2    = pow2(settingsPtr->parm("SpaceShower:fixedFacScale"));
+  renormMultFac     = parm("SpaceShower:renormMultFac");
+  factorMultFac     = parm("SpaceShower:factorMultFac");
+  useFixedFacScale  = flag("SpaceShower:useFixedFacScale");
+  fixedFacScale2    = pow2(parm("SpaceShower:fixedFacScale"));
 
   // Parameters of alphaStrong generation.
-  alphaSvalue     = settingsPtr->parm("SpaceShower:alphaSvalue");
-  alphaSorder     = settingsPtr->mode("SpaceShower:alphaSorder");
-  alphaSnfmax     = settingsPtr->mode("StandardModel:alphaSnfmax");
-  alphaSuseCMW    = settingsPtr->flag("SpaceShower:alphaSuseCMW");
+  alphaSvalue     = parm("SpaceShower:alphaSvalue");
+  alphaSorder     = mode("SpaceShower:alphaSorder");
+  alphaSnfmax     = mode("StandardModel:alphaSnfmax");
+  alphaSuseCMW    = flag("SpaceShower:alphaSuseCMW");
   alphaS2pi       = 0.5 * alphaSvalue / M_PI;
 
   // Initialize alpha_strong generation.
@@ -152,31 +152,31 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
 
   // Regularization of QCD evolution for pT -> 0. Can be taken
   // same as for multiparton interactions, or be set separately.
-  useSamePTasMPI  = settingsPtr->flag("SpaceShower:samePTasMPI");
+  useSamePTasMPI  = flag("SpaceShower:samePTasMPI");
   if (useSamePTasMPI) {
 
     // Different parametrization for photon-photon collisions.
     if (beamAPtr->isGamma() && beamBPtr->isGamma()) {
-      pT0paramMode  = settingsPtr->mode("PhotonPhoton:pT0parametrization");
-      pT0Ref        = settingsPtr->parm("PhotonPhoton:pT0Ref");
-      ecmRef        = settingsPtr->parm("PhotonPhoton:ecmRef");
-      ecmPow        = settingsPtr->parm("PhotonPhoton:ecmPow");
-      pTmin         = settingsPtr->parm("PhotonPhoton:pTmin");
+      pT0paramMode  = mode("PhotonPhoton:pT0parametrization");
+      pT0Ref        = parm("PhotonPhoton:pT0Ref");
+      ecmRef        = parm("PhotonPhoton:ecmRef");
+      ecmPow        = parm("PhotonPhoton:ecmPow");
+      pTmin         = parm("PhotonPhoton:pTmin");
     } else {
       pT0paramMode
-        = settingsPtr->mode("MultipartonInteractions:pT0parametrization");
-      pT0Ref        = settingsPtr->parm("MultipartonInteractions:pT0Ref");
-      ecmRef        = settingsPtr->parm("MultipartonInteractions:ecmRef");
-      ecmPow        = settingsPtr->parm("MultipartonInteractions:ecmPow");
-      pTmin         = settingsPtr->parm("MultipartonInteractions:pTmin");
+        = mode("MultipartonInteractions:pT0parametrization");
+      pT0Ref        = parm("MultipartonInteractions:pT0Ref");
+      ecmRef        = parm("MultipartonInteractions:ecmRef");
+      ecmPow        = parm("MultipartonInteractions:ecmPow");
+      pTmin         = parm("MultipartonInteractions:pTmin");
     }
 
   } else {
-    pT0paramMode  = settingsPtr->mode("SpaceShower:pT0parametrization");
-    pT0Ref        = settingsPtr->parm("SpaceShower:pT0Ref");
-    ecmRef        = settingsPtr->parm("SpaceShower:ecmRef");
-    ecmPow        = settingsPtr->parm("SpaceShower:ecmPow");
-    pTmin         = settingsPtr->parm("SpaceShower:pTmin");
+    pT0paramMode  = mode("SpaceShower:pT0parametrization");
+    pT0Ref        = parm("SpaceShower:pT0Ref");
+    ecmRef        = parm("SpaceShower:ecmRef");
+    ecmPow        = parm("SpaceShower:ecmPow");
+    pTmin         = parm("SpaceShower:pTmin");
   }
 
   // Calculate nominal invariant mass of events.
@@ -200,14 +200,14 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
   }
 
   // Parameters of alphaEM generation.
-  alphaEMorder    = settingsPtr->mode("SpaceShower:alphaEMorder");
+  alphaEMorder    = mode("SpaceShower:alphaEMorder");
 
   // Initialize alphaEM generation.
   alphaEM.init( alphaEMorder, settingsPtr);
 
   // Parameters of QED evolution.
-  pTminChgQ       = settingsPtr->parm("SpaceShower:pTminchgQ");
-  pTminChgL       = settingsPtr->parm("SpaceShower:pTminchgL");
+  pTminChgQ       = parm("SpaceShower:pTminchgQ");
+  pTminChgL       = parm("SpaceShower:pTminchgL");
 
   // Derived parameters of QCD evolution.
   pT20            = pow2(pT0);
@@ -216,26 +216,26 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
   pT2minChgL      = pow2(pTminChgL);
 
   // Parameters of weak evolution.
-  weakMode           = settingsPtr->mode("SpaceShower:weakShowerMode");
-  pTweakCut          = settingsPtr->parm("SpaceShower:pTminWeak");
+  weakMode           = mode("SpaceShower:weakShowerMode");
+  pTweakCut          = parm("SpaceShower:pTminWeak");
   pT2weakCut         = pow2(pTweakCut);
-  weakEnhancement    = settingsPtr->parm("WeakShower:enhancement");
-  singleWeakEmission = settingsPtr->flag("WeakShower:singleEmission");
-  vetoWeakJets       = settingsPtr->flag("WeakShower:vetoWeakJets");
-  vetoWeakDeltaR2    = pow2(settingsPtr->parm("weakShower:vetoWeakDeltaR"));
-  weakExternal       = settingsPtr->flag("WeakShower:externalSetup");
+  weakEnhancement    = parm("WeakShower:enhancement");
+  singleWeakEmission = flag("WeakShower:singleEmission");
+  vetoWeakJets       = flag("WeakShower:vetoWeakJets");
+  vetoWeakDeltaR2    = pow2(parm("weakShower:vetoWeakDeltaR"));
+  weakExternal       = flag("WeakShower:externalSetup");
 
   // Various other parameters.
-  doMEcorrections    = settingsPtr->flag("SpaceShower:MEcorrections");
-  doMEafterFirst     = settingsPtr->flag("SpaceShower:MEafterFirst");
-  doPhiPolAsym       = settingsPtr->flag("SpaceShower:phiPolAsym");
-  doPhiPolAsymHard   = settingsPtr->flag("SpaceShower:phiPolAsymHard");
-  doPhiIntAsym       = settingsPtr->flag("SpaceShower:phiIntAsym");
-  strengthIntAsym    = settingsPtr->parm("SpaceShower:strengthIntAsym");
-  nQuarkIn           = settingsPtr->mode("SpaceShower:nQuarkIn");
+  doMEcorrections    = flag("SpaceShower:MEcorrections");
+  doMEafterFirst     = flag("SpaceShower:MEafterFirst");
+  doPhiPolAsym       = flag("SpaceShower:phiPolAsym");
+  doPhiPolAsymHard   = flag("SpaceShower:phiPolAsymHard");
+  doPhiIntAsym       = flag("SpaceShower:phiIntAsym");
+  strengthIntAsym    = parm("SpaceShower:strengthIntAsym");
+  nQuarkIn           = mode("SpaceShower:nQuarkIn");
 
   // Do not do phiIntAsym if dipoleRecoil is on, to avoid doublecounting.
-  doDipoleRecoil     = settingsPtr->flag("SpaceShower:dipoleRecoil");
+  doDipoleRecoil     = flag("SpaceShower:dipoleRecoil");
   if (doDipoleRecoil) doPhiIntAsym = false;
 
   // Z0 and W+- properties needed for weak showers.
@@ -247,16 +247,16 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
   gammaW             = particleDataPtr->mWidth(24);
 
   // Possibility of two predetermined hard emissions in event.
-  doSecondHard       = settingsPtr->flag("SecondHard:generate");
+  doSecondHard       = flag("SecondHard:generate");
   twoHard            = doSecondHard;
 
   // gamma->qqbar splittings handled differently with and without MPIs.
-  doMPI              = settingsPtr->flag("PartonLevel:MPI");
+  doMPI              = flag("PartonLevel:MPI");
   gamma2qqbar        = false;
 
   // Optional dampening at small pT's when large multiplicities.
   enhanceScreening
-    = settingsPtr->mode("MultipartonInteractions:enhanceScreening");
+    = mode("MultipartonInteractions:enhanceScreening");
   if (!useSamePTasMPI) enhanceScreening = 0;
 
   // Possibility to allow user veto of emission step.
@@ -284,18 +284,18 @@ void SimpleSpaceShower::init( BeamParticle* beamAPtrIn,
 
   // Enable automated uncertainty variations.
   nVarQCD            = 0;
-  doUncertainties    = settingsPtr->flag("UncertaintyBands:doVariations")
+  doUncertainties    = flag("UncertaintyBands:doVariations")
                     && initUncertainties();
   doUncertaintiesNow = doUncertainties;
-  uVarNflavQ         = settingsPtr->mode("UncertaintyBands:nFlavQ");
-  uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
-  cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
+  uVarNflavQ         = mode("UncertaintyBands:nFlavQ");
+  uVarMPIshowers     = flag("UncertaintyBands:MPIshowers");
+  cNSpTmin           = parm("UncertaintyBands:cNSpTmin");
   uVarpTmin2         = pow2(pT0Ref);
-  uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");
-  overFactor         = settingsPtr->parm("UncertaintyBands:overSampleISR");
+  uVarpTmin2        *= parm("UncertaintyBands:ISRpTmin2Fac");
+  overFactor         = parm("UncertaintyBands:overSampleISR");
 
   // Possibility to set parton vertex information.
-  doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
+  doPartonVertex     = flag("PartonVertex:setVertex")
                     && (partonVertexPtr != 0);
 
 }
@@ -2130,8 +2130,8 @@ void SimpleSpaceShower::pT2nextWeak( double pT2begDip, double pT2endDip) {
     }
 
     // Warn if too big weight.
-    if (wt > 1.) infoPtr->errorMsg("Warning in SimpleSpaceShower::pT2nextWeak"
-      ": weight is above unity.");
+    if (wt > 1.) infoPtr->errorMsg("Warning in SimpleSpaceShower::pT2next"
+      "Weak: weight is above unity.");
 
     // Iterate until acceptable pT (or have fallen below pTmin).
   } while (wt < rndmPtr->flat()) ;
@@ -2742,7 +2742,8 @@ bool SimpleSpaceShower::branch( Event& event) {
     if ( doTrialNow && canEnhanceTrial)
       userHooksPtr->setEnhancedTrial(sqrt(pT2), weight);
     // Increment counter of rejected splittings.
-    if (vetoedEnhancedEmission && canEnhanceEmission) infoPtr->addCounter(40);
+    if (vetoedEnhancedEmission && canEnhanceEmission)
+      infoPtr->addCounter(40);
   }
 
   if (vetoedEnhancedEmission) acceptEvent = false;
@@ -3043,8 +3044,8 @@ bool SimpleSpaceShower::initUncertainties() {
 
   // Populate lists of uncertainty variations for SimpleSpaceShower,
   // by keyword.
-  uVarMuSoftCorr = settingsPtr->flag("UncertaintyBands:muSoftCorr");
-  dASmax         = settingsPtr->parm("UncertaintyBands:deltaAlphaSmax");
+  uVarMuSoftCorr = flag("UncertaintyBands:muSoftCorr");
+  dASmax         = parm("UncertaintyBands:deltaAlphaSmax");
 
   // Reset uncertainty variation maps.
   varG2GGmuRfac.clear();    varG2GGcNS.clear();

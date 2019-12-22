@@ -3,7 +3,10 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
-// This program is written by Stefan Prestel.
+// Authors: Stefan Prestel <stefan.prestel@thep.lu.se>.
+
+// Keywords: merging; leading order; CKKW-L; hepmc;
+
 // It illustrates how to do CKKW-L merging, see the Matrix Element
 // Merging page in the online manual. An example command is
 //     ./main85 main85.cmnd w_production hepmcout85.dat

@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: basic usage; LHE file; command file;
+
 // This is a simple test program.
 // It illustrates how two Les Houches Event Files can be combined in PYTHIA,
 // just like in main12.cc, but here with the difference that information is

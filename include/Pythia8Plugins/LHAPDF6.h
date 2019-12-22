@@ -97,9 +97,9 @@ class LHAPDF6 : public PDF {
 public:
 
   // Constructor.
-  LHAPDF6(int idBeamIn, string setName, int member, int, Info* infoPtr)
+  LHAPDF6(int idBeamIn, string setName, int member, int)
     : PDF(idBeamIn), pdf(0), extrapol(false)
-    { init(setName, member, infoPtr); }
+    { init(setName, member); }
 
   // Allow extrapolation beyond boundaries (not implemented).
   void setExtrapolate(bool extrapolIn) {extrapol = extrapolIn;}
@@ -113,7 +113,7 @@ private:
   bool extrapol;
 
   // Initialization of PDF set.
-  void init(string setName, int member, Info* infoPtr);
+  void init(string setName, int member);
 
   // Update parton densities.
   void xfUpdate(int id, double x, double Q2);
@@ -159,21 +159,22 @@ const double LHAPDF6::PDFMINVALUE = 1e-10;
 
 // Initialize a parton density function from LHAPDF6.
 
-void LHAPDF6::init(string setName, int member, Info *info) {
+void LHAPDF6::init(string setName, int member) {
   isSet = false;
 
   // Initialize the LHAPDF sets.
   pdfs = LHAPDF6Interface::pdfTracker.find(setName);
   if (!pdfs) {
-    info->errorMsg("Error in LHAPDF6::init: unknown PDF " + setName);
+    cout << "Error in LHAPDF6::init: unknown PDF "
+         << setName << endl;
     return;
   } else if ((*pdfs).size() == 0) {
-    info->errorMsg("Error in LHAPDF6::init: could not initialize PDF "
-                   + setName);
+    cout << "Error in LHAPDF6::init: could not initialize PDF "
+         << setName << endl;
     return;
   } else if (member >= (*pdfs).size()) {
-    info->errorMsg("Error in LHAPDF6::init: " + setName
-                   + " does not contain requested member");
+    cout << "Error in LHAPDF6::init: " << setName
+         << " does not contain requested member" << endl;
     return;
   }
   pdf = (*pdfs)[member];
@@ -321,15 +322,8 @@ void LHAPDF6::calcPDFEnvelope(pair<int,int> idNows, pair<double,double> xNows,
 
 // Define external handles to the plugin for dynamic loading.
 
-extern "C" LHAPDF6* newLHAPDF(int idBeamIn, string setName, int member,
-                               Info* infoPtr) {
-  return new LHAPDF6(idBeamIn, setName, member, 1, infoPtr);
-
-}
-
-extern "C" void deleteLHAPDF(LHAPDF6* pdf) {
-  delete pdf;
-
+extern "C" PDFPtr newLHAPDF(int idBeamIn, string setName, int member) {
+  return make_shared<LHAPDF6>(idBeamIn, setName, member, 1);
 }
 
 //==========================================================================

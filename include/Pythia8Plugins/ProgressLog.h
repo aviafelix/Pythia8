@@ -9,6 +9,9 @@
 #include <ctime>
 #include <sys/times.h>
 #include <unistd.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
 
 namespace Pythia8 {
 

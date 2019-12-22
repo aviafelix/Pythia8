@@ -26,22 +26,23 @@ const double ColConfig::CONSTITUENTMASS = 0.325;
 
 // Initialize and save pointers.
 
-void ColConfig::init(Info* infoPtrIn, Settings& settings,
-  StringFlav* flavSelPtrIn) {
+void ColConfig::init(Info* infoPtrIn, StringFlav* flavSelPtrIn) {
+
+  Settings* settingsPtr = infoPtrIn->settingsPtr;
 
   // Save pointers.
   infoPtr       = infoPtrIn;
   flavSelPtr    = flavSelPtrIn;
 
   // Joining of nearby partons along the string.
-  mJoin         = settings.parm("FragmentationSystems:mJoin");
+  mJoin         = settingsPtr->parm("FragmentationSystems:mJoin");
 
   // For consistency ensure that mJoin is bigger than in StringRegion.
   mJoin         = max( mJoin, 2. * StringRegion::MJOIN);
 
   // Simplification of q q q junction topology to quark - diquark one.
-  mJoinJunction = settings.parm("FragmentationSystems:mJoinJunction");
-  mStringMin    = settings.parm("HadronLevel:mStringMin");
+  mJoinJunction = settingsPtr->parm("FragmentationSystems:mJoinJunction");
+  mStringMin    = settingsPtr->parm("HadronLevel:mStringMin");
 
 }
 

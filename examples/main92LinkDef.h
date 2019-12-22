@@ -21,7 +21,6 @@
 #pragma link C++ class Pythia8::DecayChannel+;
 #pragma link C++ class Pythia8::Pythia+;
 #pragma link C++ class Pythia8::CoupSM+;
-#pragma link C++ class Pythia8::Couplings+;
 #pragma link C++ class Pythia8::InBeam+;
 #pragma link C++ class Pythia8::InPair+;
 #pragma link C++ class Pythia8::AlphaStrong+;

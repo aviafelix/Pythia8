@@ -80,7 +80,7 @@ collider topologies</td>
  
 <tr> 
 <td><code>LHAup</code></td> 
-<td><aloc href="LesHouchesAccord">Les Houches Accord</aloc></td> 
+<td><aloc href="LHA">Les Houches Accord</aloc></td> 
 <td>base class for Les Houches external hard-event input</td> 
 </tr> 
  

@@ -18,6 +18,7 @@
 #include "Pythia8/MergingHooks.h"
 #include "Pythia8/ParticleData.h"
 #include "Pythia8/PartonLevel.h"
+#include "Pythia8/PhysicsBase.h"
 #include "Pythia8/PythiaStdlib.h"
 #include "Pythia8/Settings.h"
 #include "Pythia8/StandardModel.h"
@@ -29,23 +30,22 @@ namespace Pythia8 {
 // Merging is a wrapper class for the interface of matrix element merging and
 // Pythia8.
 
-class Merging {
+class Merging : public  PhysicsBase {
 
 public:
+
+  // Constructor.
+  Merging() :  trialPartonLevelPtr(), mergingHooksPtr(),
+    coupSMPtr(), tmsNowMin() {}
 
   // Destructor.
   virtual ~Merging(){}
 
   // Initialisation function for internal use inside Pythia source code
-  void initPtr( Settings* settingsPtrIn, Info* infoPtrIn,
-    ParticleData* particleDataPtrIn, Rndm* rndmPtrIn,
-    BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
-    MergingHooks* mergingHooksPtrIn, PartonLevel* trialPartonLevelPtrIn,
-    CoupSM* coupSMPtrIn) { settingsPtr = settingsPtrIn; infoPtr = infoPtrIn;
-    particleDataPtr = particleDataPtrIn; rndmPtr = rndmPtrIn;
-    beamAPtr = beamAPtrIn; beamBPtr = beamBPtrIn;
+  void initPtrs( MergingHooksPtr mergingHooksPtrIn,
+    PartonLevel* trialPartonLevelPtrIn) {
     trialPartonLevelPtr = trialPartonLevelPtrIn;
-    mergingHooksPtr = mergingHooksPtrIn; coupSMPtr = coupSMPtrIn;
+    mergingHooksPtr = mergingHooksPtrIn;
   }
 
   // Initialisation function for internal use inside Pythia source code
@@ -63,35 +63,14 @@ protected:
   // The members
   //----------------------------------------------------------------------//
 
-  // Constructor.
-  Merging() : settingsPtr(), infoPtr(), particleDataPtr(), rndmPtr(),
-    trialPartonLevelPtr(), mergingHooksPtr(), beamAPtr(), beamBPtr(),
-    coupSMPtr(), tmsNowMin() {}
-
   // Make Pythia class friend
   friend class Pythia;
-
-  // Settings: databases of flags/modes/parms/words to control run.
-  Settings*      settingsPtr;
-
-  // Pointer to various information on the generation.
-  Info*          infoPtr;
-
-  // Pointer to the particle data table.
-  ParticleData*  particleDataPtr;
-
-  // Pointer to random number generator.
-  Rndm* rndmPtr;
 
   // Pointer to trial PartonLevel object
   PartonLevel* trialPartonLevelPtr;
 
   // Pointer to trial MergingHooks object
-  MergingHooks* mergingHooksPtr;
-
-  // Pointers to beam particles.
-  BeamParticle* beamAPtr;
-  BeamParticle* beamBPtr;
+  MergingHooksPtr mergingHooksPtr;
 
   // Pointer to standard model couplings.
   CoupSM* coupSMPtr;

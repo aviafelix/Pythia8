@@ -3,6 +3,9 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: basic usage; command file; cross sections; minimum bias;
+// diffraction;
+
 // This is a simple test program.
 // It illustrates how to generate and study "total cross section" processes,
 // i.e. elastic, single and double diffractive, and the "minimum-bias" rest.

@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: basic usage; charged multiplicity;
+
 // This is a simple test program. It fits on one slide in a talk.
 // It studies the charged multiplicity distribution at the LHC.
 

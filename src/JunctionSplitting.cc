@@ -39,28 +39,23 @@ const double JunctionSplitting::MINANGLE       = 1e-7;
 
 // Initialize the class and all the created classes.
 
-void JunctionSplitting::init( Info* infoPtrIn, Settings& settings,
-  Rndm* rndmPtrIn, ParticleData* particleDataPtrIn) {
-
-  infoPtr = infoPtrIn;
-  rndmPtr = rndmPtrIn;
+void JunctionSplitting::init() {
 
   // Initialize
-  colTrace.init(infoPtrIn);
-  stringLength.init(infoPtrIn, settings);
+  colTrace.init(infoPtr);
+  stringLength.init(infoPtr, *settingsPtr);
 
   // Initialize auxiliary fragmentation classes.
-  flavSel.init(settings,  particleDataPtrIn, rndmPtr, infoPtr);
-  pTSel.init(  settings,  particleDataPtrIn, rndmPtr, infoPtr);
-  zSel.init(   settings, *particleDataPtrIn, rndmPtr, infoPtr);
+  flavSel.init();
+  pTSel.init();
+  zSel.init();
 
   // Initialize string and ministring fragmentation.
-  stringFrag.init(infoPtr, settings, particleDataPtrIn, rndmPtr,
-    &flavSel, &pTSel, &zSel);
+  stringFrag.init(&flavSel, &pTSel, &zSel);
 
   // For junction processing.
-  eNormJunction     = settings.parm("StringFragmentation:eNormJunction");
-  allowDoubleJunRem = settings.flag("ColourReconnection:allowDoubleJunRem");
+  eNormJunction     = parm("StringFragmentation:eNormJunction");
+  allowDoubleJunRem = flag("ColourReconnection:allowDoubleJunRem");
 }
 
 //--------------------------------------------------------------------------

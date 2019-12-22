@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: basic usage; DIS;
+
 // Basic setup for Deeply Inelastic Scattering at HERA.
 
 #include "Pythia8/Pythia.h"

@@ -106,6 +106,7 @@ struct XMLTag {
 
       // Find the first tag.
       pos_t begin = str.find("<", curr);
+
       // Skip tags in lines beginning with #.
       pos_t lastbreak_before_begin = str.find_last_of("\n",begin);
       pos_t lastpound_before_begin = str.find_last_of("#",begin);
@@ -269,7 +270,7 @@ struct LHAweights {
   string contents;
 
   // Return number of weights.
-  int size() { return int(weights.size()); }
+  int size() const { return int(weights.size()); }
 
 };
 
@@ -461,7 +462,7 @@ struct LHAweightgroup {
   map<string,string> attributes;
 
   // Return number of weights.
-  int size() { return int(weights.size()); }
+  int size() const { return int(weights.size()); }
 
 };
 
@@ -499,7 +500,7 @@ struct LHArwgt {
   map<string,string> attributes;
 
   // Return number of weights.
-  int size() { return int(wgts.size()); }
+  int size() const { return int(wgts.size()); }
 
 };
 
@@ -542,10 +543,10 @@ struct LHAinitrwgt {
   map<string,string> attributes;
 
   // Return number of weights.
-  int size() { return int(weights.size());}
+  int size() const { return int(weights.size());}
 
   // Return number of weights.
-  int sizeWeightGroups() { return int(weightgroups.size()); }
+  int sizeWeightGroups() const { return int(weightgroups.size()); }
 
 };
 

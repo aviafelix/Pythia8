@@ -201,7 +201,7 @@ public:
     lineSaved(false) {}
 
   // Initialize Info pointer.
-  void initPtr(Info* infoPtrIn) {infoPtr = infoPtrIn;}
+  void initPtrs(Info* infoPtrIn) {infoPtr = infoPtrIn;}
 
   // Read in database from specific file.
   bool init(string startFile = "../share/Pythia8/xmldoc/Index.xml",

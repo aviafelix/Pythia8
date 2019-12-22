@@ -64,7 +64,7 @@ private:
   int lambdaForm;
 
   // Pointer to various information on the generation.
-  Info*          infoPtr;
+  Info* infoPtr;
 
   // This is only to access the function call junctionRestFrame.
   StringFragmentation stringFragmentation;

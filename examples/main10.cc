@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: userhooks; jet finding; anti-kT; process veto;
+
 // Example how you can use UserHooks to trace pT spectrum through program,
 // and veto undesirable jet multiplicities.
 
@@ -132,7 +134,7 @@ int main() {
   pythia.readString("HadronLevel:all = off");
 
   // Set up to do a user veto and send it in.
-  MyUserHooks* myUserHooks = new MyUserHooks();
+  auto myUserHooks = make_shared<MyUserHooks>();
   pythia.setUserHooksPtr( myUserHooks);
 
   // Tevatron initialization.
@@ -153,6 +155,5 @@ int main() {
   pythia.stat();
 
   // Done.
-  delete myUserHooks;
   return 0;
 }

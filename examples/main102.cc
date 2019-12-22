@@ -3,6 +3,10 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: hadronization; colour reconnection; rope hadronization;
+
+// Authors: Christian Bierlich <christian.bierlich@thep.lu.se>.
+
 // This program provides a demonstration of the flavour rope model supplied
 // in the Rope Hadronization framework. It produces four histograms
 // showing the ratio of respectively K^0_s, Lambda_0, Cascade and Omega^-
@@ -44,7 +48,7 @@ int main() {
 
   // Note: High statistics is needed to fill the high multiplicity
   // end of the histograms, especially for Omega.
-  const int nEvent = 100000;
+  const int nEvent = 4000;
   // Begin event loop. Generate event. Skip if error. List first one.
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
     if (!pythia.next()) continue;

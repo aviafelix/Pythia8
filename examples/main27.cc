@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: extra dimensions; BSM;
+
 // Kaluza-Klein gamma*/Z resonances in TeV-sized extra dimensions.
 
 #include <assert.h>

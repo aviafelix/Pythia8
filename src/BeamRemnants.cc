@@ -35,42 +35,33 @@ const bool   BeamRemnants::CORRECTMISMATCH  = false;
 
 // Initialization.
 
-bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
-  BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
-  PartonSystems* partonSystemsPtrIn, PartonVertex* partonVertexPtrIn,
-  ParticleData* particleDataPtrIn,
-  ColourReconnection* colourReconnectionPtrIn) {
+bool BeamRemnants::init( PartonVertexPtr partonVertexPtrIn,
+  ColRecPtr colourReconnectionPtrIn) {
 
   // Save pointers.
-  infoPtr               = infoPtrIn;
-  rndmPtr               = rndmPtrIn;
-  beamAPtr              = beamAPtrIn;
-  beamBPtr              = beamBPtrIn;
-  partonSystemsPtr      = partonSystemsPtrIn;
   partonVertexPtr       = partonVertexPtrIn;
   colourReconnectionPtr = colourReconnectionPtrIn;
-  particleDataPtr       = particleDataPtrIn;
 
   // Width of primordial kT distribution.
-  doPrimordialKT      = settings.flag("BeamRemnants:primordialKT");
-  primordialKTsoft    = settings.parm("BeamRemnants:primordialKTsoft");
-  primordialKThard    = settings.parm("BeamRemnants:primordialKThard");
-  primordialKTremnant = settings.parm("BeamRemnants:primordialKTremnant");
-  halfScaleForKT      = settings.parm("BeamRemnants:halfScaleForKT");
-  halfMassForKT       = settings.parm("BeamRemnants:halfMassForKT");
-  reducedKTatHighY    = settings.parm("BeamRemnants:reducedKTatHighY");
+  doPrimordialKT      = flag("BeamRemnants:primordialKT");
+  primordialKTsoft    = parm("BeamRemnants:primordialKTsoft");
+  primordialKThard    = parm("BeamRemnants:primordialKThard");
+  primordialKTremnant = parm("BeamRemnants:primordialKTremnant");
+  halfScaleForKT      = parm("BeamRemnants:halfScaleForKT");
+  halfMassForKT       = parm("BeamRemnants:halfMassForKT");
+  reducedKTatHighY    = parm("BeamRemnants:reducedKTatHighY");
 
   // Handling of rescattering kinematics uncertainties from primodial kT.
-  allowRescatter    = settings.flag("MultipartonInteractions:allowRescatter");
-  doRescatterRestoreY = settings.flag("BeamRemnants:rescatterRestoreY");
+  allowRescatter    = flag("MultipartonInteractions:allowRescatter");
+  doRescatterRestoreY = flag("BeamRemnants:rescatterRestoreY");
 
   // Choice of beam remnant and colour reconnection scenarios.
-  remnantMode         = settings.mode("BeamRemnants:remnantMode");
-  doReconnect         = settings.flag("ColourReconnection:reconnect");
-  reconnectMode       = settings.mode("ColourReconnection:mode");
+  remnantMode         = mode("BeamRemnants:remnantMode");
+  doReconnect         = flag("ColourReconnection:reconnect");
+  reconnectMode       = mode("ColourReconnection:mode");
 
   // Do multiparton interactions.
-  doMPI               = settings.flag("PartonLevel:MPI");
+  doMPI               = flag("PartonLevel:MPI");
 
   // Check that remnant model and colour reconnection model work together.
   if (remnantMode == 1 && reconnectMode == 0) {
@@ -84,10 +75,10 @@ bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
   sCM                 = eCM * eCM;
 
   // Initialize junction splitting class.
-  junctionSplitting.init(infoPtr, settings, rndmPtr, particleDataPtrIn);
+  junctionSplitting.init();
 
   // Possibility to set parton vertex information.
-  doPartonVertex      = settings.flag("PartonVertex:setVertex")
+  doPartonVertex      = flag("PartonVertex:setVertex")
                      && (partonVertexPtr != 0);
 
   // Done.
@@ -287,13 +278,14 @@ bool BeamRemnants::addOld( Event& event) {
         // First the beam remnant particle itself.
         partonVertexPtr->vertexBeam(j, beam, event);
         // Then possible daughters.
-        for(int k = 0, N = dList.size(); k < N; ++k )
-                partonVertexPtr->vertexBeam(dList[k],beam,event);
+        for (int k = 0, N = dList.size(); k < N; ++k )
+          partonVertexPtr->vertexBeam(dList[k],beam,event);
       }
       // Switch beam.
       beamPtr = beamBPtr;
     }
   }
+
   // Done.
   return true;
 }
@@ -1434,7 +1426,7 @@ bool BeamRemnants::checkColours( Event& event) {
   // Repair step - sometimes needed when rescattering allowed.
   if (colList.size() > 0 || acolList.size() > 0) {
     infoPtr->errorMsg("Warning in BeamRemnants::checkColours:"
-                      " need to repair unmatched colours");
+      " need to repair unmatched colours");
   }
   while (colList.size() > 0 && acolList.size() > 0) {
 

@@ -16,6 +16,7 @@
 #include "Pythia8/Info.h"
 #include "Pythia8/ParticleData.h"
 #include "Pythia8/PartonDistributions.h"
+#include "Pythia8/PhysicsBase.h"
 #include "Pythia8/PythiaStdlib.h"
 #include "Pythia8/Settings.h"
 
@@ -116,12 +117,12 @@ private:
 // This class holds info on a beam particle in the evolution of
 // initial-state radiation and multiparton interactions.
 
-class BeamParticle {
+class BeamParticle : public PhysicsBase {
 
 public:
 
   // Constructor.
-  BeamParticle() : infoPtr(), particleDataPtr(), rndmPtr(), pdfBeamPtr(),
+  BeamParticle() : pdfBeamPtr(),
     pdfHardBeamPtr(), pdfUnresBeamPtr(), pdfBeamPtrSave(),
     pdfHardBeamPtrSave(), flavSelPtr(), allowJunction(), beamJunction(),
     maxValQuark(), companionPower(), valencePowerMeson(), valencePowerUinP(),
@@ -141,16 +142,15 @@ public:
 
   // Initialize data on a beam particle and save pointers.
   void init( int idIn, double pzIn, double eIn, double mIn,
-    Info* infoPtrIn, Settings& settings, ParticleData* particleDataPtrIn,
-    Rndm* rndmPtrIn, PDF* pdfInPtr, PDF* pdfHardInPtr, bool isUnresolvedIn,
+    PDFPtr pdfInPtr, PDFPtr pdfHardInPtr, bool isUnresolvedIn,
     StringFlav* flavSelPtrIn);
 
   // Initialize only the two pdf pointers.
-  void initPDFPtr(PDF* pdfInPtr, PDF* pdfHardInPtr) {
+  void initPDFPtr(PDFPtr pdfInPtr, PDFPtr pdfHardInPtr) {
     pdfBeamPtr = pdfInPtr; pdfHardBeamPtr = pdfHardInPtr; }
 
   // Initialize additional PDF pointer for unresolved beam.
-  void initUnres(PDF* pdfUnresInPtr);
+  void initUnres(PDFPtr pdfUnresInPtr);
 
   // For mesons like pi0 valence content varies from event to event.
   void newValenceContent();
@@ -422,23 +422,14 @@ private:
   static const double XMINUNRESOLVED, POMERONMASS, XMAXCOMPANION, TINYZREL;
   static const int NMAX, NRANDOMTRIES;
 
-  // Pointer to various information on the generation.
-  Info*         infoPtr;
-
-  // Pointer to the particle data table.
-  ParticleData* particleDataPtr;
-
-  // Pointer to the random number generator.
-  Rndm*         rndmPtr;
-
   // Pointers to PDF sets.
-  PDF*          pdfBeamPtr;
-  PDF*          pdfHardBeamPtr;
+  PDFPtr          pdfBeamPtr;
+  PDFPtr          pdfHardBeamPtr;
 
   // Pointer to unresolved PDF and two others to save the resolved ptrs.
-  PDF*          pdfUnresBeamPtr;
-  PDF*          pdfBeamPtrSave;
-  PDF*          pdfHardBeamPtrSave;
+  PDFPtr          pdfUnresBeamPtr;
+  PDFPtr          pdfBeamPtrSave;
+  PDFPtr          pdfHardBeamPtrSave;
 
   // Pointer to class for flavour generation.
   StringFlav*   flavSelPtr;

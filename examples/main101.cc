@@ -3,6 +3,10 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Authors: Christian Bierlich <christian.bierlich@thep.lu.se>.
+
+// Keywords: hadronization; colour reconnection; string shoving;
+
 // This program provides a demonstration of the string shoving model supplied
 // in the Rope Hadronization framework. It produces four histograms
 // shoving the emergence of a "ridge" in two-particle correlations at high
@@ -49,7 +53,7 @@ int main() {
   Hist deltaPhi4("dPhi, 60 < Nch < 120", 16, -M_PI/2., 3.);
   // Note: High statistics is needed to fill the high multiplicity
   // histogram.
-  const int nEvent = 100000;
+  const int nEvent = 10000;
   // Begin event loop. Generate event. Skip if error. List first one.
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
     if (!pythia.next()) continue;

@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: resonance decay; external resonance;
+
 // Simple illustration how to provide (a) your own resonance-width class,
 // and (b) your own cross-section class, with instances handed in to Pythia.
 // The hypothetical scenario is that top would have been so long-lived

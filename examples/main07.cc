@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: two-body decay; astroparticle; python; matplotlib;
+
 // Illustration how to generate various two-body channels from
 // astroparticle processes, e.g. neutralino annihilation or decay.
 // To this end a "blob" of energy is created with unit cross section,

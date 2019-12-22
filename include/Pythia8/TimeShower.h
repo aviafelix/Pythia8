@@ -15,6 +15,7 @@
 #include "Pythia8/Info.h"
 #include "Pythia8/ParticleData.h"
 #include "Pythia8/PartonSystems.h"
+#include "Pythia8/PhysicsBase.h"
 #include "Pythia8/PythiaStdlib.h"
 #include "Pythia8/PartonVertex.h"
 #include "Pythia8/Settings.h"
@@ -28,35 +29,23 @@ namespace Pythia8 {
 
 // The TimeShower class does timelike showers.
 
-class TimeShower {
+class TimeShower : public PhysicsBase {
 
 public:
 
   // Constructor.
-  TimeShower() : mergingHooksPtr(), infoPtr(), settingsPtr(),
-    particleDataPtr(), rndmPtr(), coupSMPtr(), beamAPtr(), beamBPtr(),
-    partonSystemsPtr(), userHooksPtr(), partonVertexPtr(),
-    doUncertainties(), uVarMuSoftCorr(), uVarMPIshowers(), noResVariations(),
-    noProcVariations(), nUncertaintyVariations(), nVarQCD(), uVarNflavQ(),
-    dASmax(), cNSpTmin(), uVarpTmin2(), overFactor(), varG2GGmuRfac(),
-    varQ2QGmuRfac(), varG2QQmuRfac(), varX2XGmuRfac(), varG2GGcNS(),
-    varQ2QGcNS(), varG2QQcNS(), varX2XGcNS(), varPDFplus(), varPDFminus(),
-    varPDFmember() {}
+  TimeShower() = default;
 
   // Destructor.
   virtual ~TimeShower() {}
 
   // Initialize various pointers.
   // (Separated from rest of init since not virtual.)
-  void initPtr(Info* infoPtrIn, Settings* settingsPtrIn,
-    ParticleData* particleDataPtrIn, Rndm* rndmPtrIn,
-    CoupSM* coupSMPtrIn, PartonSystems* partonSystemsPtrIn,
-    UserHooks* userHooksPtrIn, MergingHooks* mergingHooksPtrIn,
-    PartonVertex* partonVertexPtrIn) { infoPtr = infoPtrIn;
-    settingsPtr = settingsPtrIn; particleDataPtr = particleDataPtrIn;
-    rndmPtr = rndmPtrIn; coupSMPtr = coupSMPtrIn;
-    partonSystemsPtr = partonSystemsPtrIn; userHooksPtr = userHooksPtrIn;
-    mergingHooksPtr = mergingHooksPtrIn; partonVertexPtr = partonVertexPtrIn;
+  void initPtrs(MergingHooksPtr mergingHooksPtrIn,
+    PartonVertexPtr partonVertexPtrIn) {
+    coupSMPtr = infoPtr->coupSMPtr;
+    mergingHooksPtr = mergingHooksPtrIn;
+    partonVertexPtr = partonVertexPtrIn;
   }
 
   // New beams possible for handling of hard diffraction. (Not virtual.)
@@ -170,44 +159,24 @@ public:
     { return vector<int>(); }
 
   // Pointer to MergingHooks object for NLO merging.
-  MergingHooks*  mergingHooksPtr;
+  MergingHooksPtr  mergingHooksPtr{};
 
 protected:
 
-  // Pointer to various information on the generation.
-  Info*          infoPtr;
-
-  // Pointer to the settings database.
-  Settings*      settingsPtr;
-
-  // Pointer to the particle data table.
-  ParticleData*  particleDataPtr;
-
-  // Pointer to the random number generator.
-  Rndm*          rndmPtr;
-
   // Pointer to Standard Model couplings.
-  CoupSM*        coupSMPtr;
+  CoupSM*          coupSMPtr{};
 
-  // Pointers to the two incoming beams. Offset their location in event.
-  BeamParticle*  beamAPtr;
-  BeamParticle*  beamBPtr;
-  int            beamOffset;
-
-  // Pointer to information on subcollision parton locations.
-  PartonSystems* partonSystemsPtr;
-
-  // Pointer to userHooks object for user interaction with program.
-  UserHooks*     userHooksPtr;
+  // Beam location offset in event.
+  int              beamOffset{};
 
   // Pointer to assign space-time vertices during parton evolution.
-  PartonVertex*  partonVertexPtr;
+  PartonVertexPtr  partonVertexPtr{};
 
   // Store uncertainty variations relevant to TimeShower.
-  bool   doUncertainties, uVarMuSoftCorr, uVarMPIshowers, noResVariations,
-         noProcVariations;
-  int    nUncertaintyVariations, nVarQCD, uVarNflavQ;
-  double dASmax, cNSpTmin, uVarpTmin2, overFactor;
+  bool   doUncertainties{}, uVarMuSoftCorr{}, uVarMPIshowers{},
+         noResVariations{}, noProcVariations{};
+  int    nUncertaintyVariations{}, nVarQCD{}, uVarNflavQ{};
+  double dASmax{}, cNSpTmin{}, uVarpTmin2{}, overFactor{};
   map<int,double> varG2GGmuRfac, varQ2QGmuRfac, varG2QQmuRfac, varX2XGmuRfac,
                   varG2GGcNS, varQ2QGcNS, varG2QQcNS, varX2XGcNS;
   map<int,double>* varPDFplus;

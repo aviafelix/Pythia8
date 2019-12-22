@@ -673,13 +673,13 @@ const double MSTWpdf::qqInit[49] = {0., 1.0, 1.25, 1.5, 0., 0., 2.5, 3.2,
 
 // Initialize PDF: select data file and open stream.
 
-void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
+void MSTWpdf::init(int iFitIn, string pdfdataPath, Info* infoPtr) {
 
   // Choice of fit among possibilities.
   iFit = iFitIn;
 
   // Select which data file to read for current fit.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   string fileName = "  ";
   if (iFit == 1) fileName = "mrstlostar.00.dat";
   if (iFit == 2) fileName = "mrstlostarstar.00.dat";
@@ -687,7 +687,7 @@ void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
   if (iFit == 4) fileName = "mstw2008nlo.00.dat";
 
   // Open data file.
-  ifstream data_file( (xmlPath + fileName).c_str() );
+  ifstream data_file( (pdfdataPath + fileName).c_str() );
   if (!data_file.good()) {
     printErr("Error in MSTWpdf::init: did not find data file ", infoPtr);
     isSet = false;
@@ -1291,13 +1291,13 @@ const double CTEQ6pdf::XPOWER = 0.3;
 
 // Initialize PDF: select data file and open stream.
 
-void CTEQ6pdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
+void CTEQ6pdf::init(int iFitIn, string pdfdataPath, Info* infoPtr) {
 
   // Choice of fit among possibilities.
   iFit = iFitIn;
 
   // Select which data file to read for current fit.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   string fileName = "  ";
   if (iFit == 1) fileName = "cteq6l.tbl";
   if (iFit == 2) fileName = "cteq6l1.tbl";
@@ -1313,7 +1313,7 @@ void CTEQ6pdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
   bool isPdsGrid = (iFit > 2);
 
   // Open data file.
-  ifstream pdfgrid( (xmlPath + fileName).c_str() );
+  ifstream pdfgrid( (pdfdataPath + fileName).c_str() );
   if (!pdfgrid.good()) {
     printErr("Error in CTEQ6pdf::init: did not find data file", infoPtr);
     isSet = false;
@@ -1733,7 +1733,8 @@ void ProtonPoint::xfUpdate(int , double x, double /*Q2*/ ) {
 
   double fgm = 0.;
   if (phiMax < phiMin) {
-    printErr("Error in ProtonPoint::xfUpdate: phiMax - phiMin < 0!", infoPtr);
+    printErr("Error in ProtonPoint::xfUpdate: phiMax - phiMin < 0!",
+      infoPtr);
   } else {
     // Corresponds to: x*f(x)
     fgm = (ALPHAEM / M_PI) * (1 - x) * (phiMax - phiMin);
@@ -1908,14 +1909,14 @@ void PomFix::xfUpdate(int , double x, double) {
 
 // Initialize PDF: select data file and open stream.
 
-void PomH1FitAB::init( int iFit, string xmlPath, Info* infoPtr) {
+void PomH1FitAB::init( int iFit, string pdfdataPath, Info* infoPtr) {
 
   // Open files from which grids should be read in.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   string         dataFile = "pomH1FitBlo.data";
   if (iFit == 1) dataFile = "pomH1FitA.data";
   if (iFit == 2) dataFile = "pomH1FitB.data";
-  ifstream is( (xmlPath + dataFile).c_str() );
+  ifstream is( (pdfdataPath + dataFile).c_str() );
   if (!is.good()) {
     printErr("Error in PomH1FitAB::init: did not find data file", infoPtr);
     isSet = false;
@@ -1963,7 +1964,8 @@ void PomH1FitAB::init( istream& is, Info* infoPtr) {
 
   // Check for errors during read-in of file.
   if (!is) {
-    printErr("Error in PomH1FitAB::init: could not read data stream", infoPtr);
+    printErr("Error in PomH1FitAB::init: could not read data stream",
+      infoPtr);
     isSet = false;
     return;
   }
@@ -2047,11 +2049,11 @@ void PomH1FitAB::xfUpdate(int , double x, double Q2) {
 
 // Initialize PDF: select data file and open stream.
 
-void PomH1Jets::init( int , string xmlPath, Info* infoPtr) {
+void PomH1Jets::init( int , string pdfdataPath, Info* infoPtr) {
 
   // Open files from which grids should be read in.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
-  ifstream is( (xmlPath + "pomH1Jets.data").c_str() );
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
+  ifstream is( (pdfdataPath + "pomH1Jets.data").c_str() );
   if (!is.good()) {
     printErr("Error in PomH1Jets::init: did not find data file", infoPtr);
     isSet = false;
@@ -2308,13 +2310,13 @@ const double NNPDF::fXMINGRID = 1e-9;
 
 // Initialize PDF: select data file and open stream.
 
-void NNPDF::init(int iFitIn, string xmlPath, Info* infoPtr) {
+void NNPDF::init(int iFitIn, string pdfdataPath, Info* infoPtr) {
 
   // Choice of fit among possibilities.
   iFit = iFitIn;
 
   // Select which data file to read for current fit.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   string fileName = "  ";
   // NNPDF2.3 LO QCD+QED, for two values of alphas
   if (iFit == 1) fileName = "NNPDF23_lo_as_0130_qed_mem0.grid";
@@ -2326,7 +2328,7 @@ void NNPDF::init(int iFitIn, string xmlPath, Info* infoPtr) {
 
   // Open data file.
   fstream f;
-  f.open( (xmlPath + fileName).c_str(),ios::in);
+  f.open( (pdfdataPath + fileName).c_str(),ios::in);
   if (f.fail()) {
     printErr("Error in NNPDF::init: did not find data file ", infoPtr);
     isSet = false;
@@ -2611,26 +2613,8 @@ LHAPDF::LHAPDF(int idIn, string pSet, Info* infoPtrIn) :
     return;
   }
   libName = "libpythia8lhapdf" + libName.substr(6) + ".so";
-
-  // Load the plugin library.
-  const char* error(0);
-  map<string, pair<void*, int> >::iterator plugin =
-    infoPtr->plugins.find(libName);
-  if (plugin == infoPtr->plugins.end()) {
-    lib   = dlopen(libName.c_str(), RTLD_LAZY);
-    error = dlerror();
-  }
-  if (error) {
-    printErr("Error in LHAPDF::init: " + string(error), infoPtr);
-    return;
-  }
-  if (plugin == infoPtr->plugins.end())
-    infoPtr->plugins[libName] = pair<void*, int>(lib, 1);
-  else {
-    lib = plugin->second.first;
-    ++plugin->second.second;
-  }
-  dlerror();
+  lib = infoPtr->loadPlugin(libName);
+  if (lib == nullptr) return;
 
   // Determine the PDF set and member.
   string   set = pSet.substr(8);
@@ -2647,31 +2631,6 @@ LHAPDF::LHAPDF(int idIn, string pSet, Info* infoPtrIn) :
   if (!newLHAPDF) return;
   pdfPtr = newLHAPDF(idIn, set, mem, infoPtr);
   isSet = true;
-
-}
-
-//--------------------------------------------------------------------------
-
-// Destructor.
-
-LHAPDF::~LHAPDF() {
-  if (!infoPtr) return;
-  if (!isSet)   return;
-
-  // Delete the PDF.
-  DeleteLHAPDF* deleteLHAPDF = (DeleteLHAPDF*)symbol("deleteLHAPDF");
-  if (deleteLHAPDF) deleteLHAPDF(pdfPtr);
-
-  // Close the plugin library if not needed by other instances.
-  map<string, pair<void*, int> >::iterator plugin =
-    infoPtr->plugins.find(libName);
-  if (plugin == infoPtr->plugins.end()) return;
-  --plugin->second.second;
-  if (plugin->second.first && plugin->second.second == 0) {
-    dlclose(plugin->second.first);
-    dlerror();
-    infoPtr->plugins.erase(plugin);
-  }
 
 }
 
@@ -3300,7 +3259,7 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
 
 // Initialize PDF: select data file and open stream.
 
-void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
+void LHAGrid1::init(string pdfWord, string pdfdataPath, Info* infoPtr) {
 
   // Identify whether file number or name.
   if (pdfWord.length() > 9 && toLower(pdfWord).substr(0,9) == "lhagrid1:")
@@ -3311,27 +3270,33 @@ void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
 
   // Input is file name.
   string dataFile = "";
-  if ( xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if ( pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   if (pdfWord[0] == '/') dataFile = pdfWord;
-  else if (pdfSet == 0) dataFile = xmlPath + pdfWord;
+  else if (pdfSet == 0) dataFile = pdfdataPath + pdfWord;
 
   // Input is fit number. Current selection for NNPDF3.1 and modified NNLO.
-  else if (pdfSet == 17) dataFile = xmlPath + "NNPDF31_lo_as_0130_0000.dat";
-  else if (pdfSet == 18) dataFile = xmlPath + "NNPDF31_lo_as_0118_0000.dat";
-  else if (pdfSet == 19) dataFile = xmlPath
+  else if (pdfSet == 17) dataFile = pdfdataPath
+    + "NNPDF31_lo_as_0130_0000.dat";
+  else if (pdfSet == 18) dataFile = pdfdataPath
+    + "NNPDF31_lo_as_0118_0000.dat";
+  else if (pdfSet == 19) dataFile = pdfdataPath
     + "NNPDF31_nlo_as_0118_luxqed_0000.dat";
-  else if (pdfSet == 20) dataFile = xmlPath
+  else if (pdfSet == 20) dataFile = pdfdataPath
     + "NNPDF31_nnlo_as_0118_luxqed_0000.dat";
-  else if (pdfSet == 21) dataFile = xmlPath
+  else if (pdfSet == 21) dataFile = pdfdataPath
     + "NNPDF31sx_nlonllx_as_0118_LHCb_luxqed_0000.dat";
-  else if (pdfSet == 22) dataFile = xmlPath
+  else if (pdfSet == 22) dataFile = pdfdataPath
     + "NNPDF31sx_nnlonllx_as_0118_LHCb_luxqed_0000.dat";
 
   // Pomeron PDFs, currently the GKG18 sets.
-  else if (pdfSet == 112) dataFile = xmlPath + "GKG18_DPDF_FitA_LO_0000.dat";
-  else if (pdfSet == 113) dataFile = xmlPath + "GKG18_DPDF_FitB_LO_0000.dat";
-  else if (pdfSet == 114) dataFile = xmlPath + "GKG18_DPDF_FitA_NLO_0000.dat";
-  else if (pdfSet == 115) dataFile = xmlPath + "GKG18_DPDF_FitB_NLO_0000.dat";
+  else if (pdfSet == 112) dataFile = pdfdataPath
+    + "GKG18_DPDF_FitA_LO_0000.dat";
+  else if (pdfSet == 113) dataFile = pdfdataPath
+    + "GKG18_DPDF_FitB_LO_0000.dat";
+  else if (pdfSet == 114) dataFile = pdfdataPath
+    + "GKG18_DPDF_FitA_NLO_0000.dat";
+  else if (pdfSet == 115) dataFile = pdfdataPath
+    + "GKG18_DPDF_FitB_NLO_0000.dat";
 
   // Open files from which grids should be read in.
   ifstream is( dataFile.c_str() );
@@ -3997,7 +3962,7 @@ double EPAexternal::intFluxApprox() {
 
 // Inherited class for nuclear PDFs. Needs a proton PDF as a baseline.
 
-void nPDF::initNPDF(PDF* protonPDFPtrIn) {
+void nPDF::initNPDF(PDFPtr protonPDFPtrIn) {
 
   // Derive mass number and number of protons.
   a = (idBeam/10) % 1000;
@@ -4079,18 +4044,18 @@ const int EPS09::Q2STEPS  = 50;
 
 // Initialize EPS09 nPDFs with given order (1=LO, 2=NLO) and error set.
 
-void EPS09::init(int iOrderIn, int iSetIn, string xmlPath) {
+void EPS09::init(int iOrderIn, int iSetIn, string pdfdataPath) {
 
   // Save the order and error set number.
   iOrder = iOrderIn;
   iSet   = iSetIn;
 
   // Select which data file to read for current fit.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   stringstream fileSS;
 
-  if (iOrder == 1) fileSS << xmlPath << "EPS09LOR_" << getA();
-  if (iOrder == 2) fileSS << xmlPath << "EPS09NLOR_" << getA();
+  if (iOrder == 1) fileSS << pdfdataPath << "EPS09LOR_" << getA();
+  if (iOrder == 2) fileSS << pdfdataPath << "EPS09NLOR_" << getA();
   string gridFile = fileSS.str();
 
   // Open grid file.
@@ -4250,7 +4215,7 @@ const int EPPS16::NSETS    = 41;
 
 // Initialize EPPS16 nPDFs with given order (1=LO, 2=NLO) and error set.
 
-void EPPS16::init(int iSetIn, string xmlPath) {
+void EPPS16::init(int iSetIn, string pdfdataPath) {
 
   // Save the error set number and derive useful values.
   iSet           = iSetIn;
@@ -4259,9 +4224,9 @@ void EPPS16::init(int iSetIn, string xmlPath) {
   logX2min       = log(XMIN) - 2. * (1. - XMIN);
 
   // Select which data file to read for current fit.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfdataPath[ pdfdataPath.length() - 1 ] != '/') pdfdataPath += "/";
   stringstream fileSS;
-  fileSS << xmlPath << "EPPS16NLOR_" << getA();
+  fileSS << pdfdataPath << "EPPS16NLOR_" << getA();
   string gridFile = fileSS.str();
 
   // Open grid file.

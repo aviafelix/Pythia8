@@ -66,7 +66,7 @@ public:
     mStringMin() {singlets.resize(0);}
 
   // Initialize and save pointers.
-  void init(Info* infoPtrIn, Settings& settings, StringFlav* flavSelPtrIn);
+  void init(Info* infoPtrIn, StringFlav* flavSelPtrIn);
 
   // Number of colour singlets.
   int size() const {return singlets.size();}

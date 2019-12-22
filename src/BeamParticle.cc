@@ -60,14 +60,10 @@ const int BeamParticle::NRANDOMTRIES = 1000;
 // Initialize data on a beam particle and save pointers.
 
 void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
-  Info* infoPtrIn, Settings& settings, ParticleData* particleDataPtrIn,
-  Rndm* rndmPtrIn, PDF* pdfInPtr, PDF* pdfHardInPtr, bool isUnresolvedIn,
+  PDFPtr pdfInPtr, PDFPtr pdfHardInPtr, bool isUnresolvedIn,
   StringFlav* flavSelPtrIn) {
 
   // Store input pointers (and one bool) for future use.
-  infoPtr           = infoPtrIn;
-  particleDataPtr   = particleDataPtrIn;
-  rndmPtr           = rndmPtrIn;
   pdfBeamPtr        = pdfInPtr;
   pdfHardBeamPtr    = pdfHardInPtr;
   isUnresolvedBeam  = isUnresolvedIn;
@@ -79,54 +75,54 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   pdfHardBeamPtrSave = pdfHardInPtr;
 
   // Check whether beam has a supplementary photon beam.
-  bool beamHasGamma  = settings.flag("PDF:lepton2gamma");
+  bool beamHasGamma  = flag("PDF:lepton2gamma");
 
   // Maximum quark kind in allowed incoming beam hadrons.
-  maxValQuark       = settings.mode("BeamRemnants:maxValQuark");
+  maxValQuark       = mode("BeamRemnants:maxValQuark");
 
   // Power of (1-x)^power/sqrt(x) for remnant valence quark distribution.
-  valencePowerMeson = settings.parm("BeamRemnants:valencePowerMeson");
-  valencePowerUinP  = settings.parm("BeamRemnants:valencePowerUinP");
-  valencePowerDinP  = settings.parm("BeamRemnants:valencePowerDinP");
+  valencePowerMeson = parm("BeamRemnants:valencePowerMeson");
+  valencePowerUinP  = parm("BeamRemnants:valencePowerUinP");
+  valencePowerDinP  = parm("BeamRemnants:valencePowerDinP");
 
   // Enhancement factor of x of diquark.
-  valenceDiqEnhance = settings.parm("BeamRemnants:valenceDiqEnhance");
+  valenceDiqEnhance = parm("BeamRemnants:valenceDiqEnhance");
 
   // Assume g(x) ~ (1-x)^power/x to constrain companion to sea quark.
-  companionPower    = settings.mode("BeamRemnants:companionPower");
+  companionPower    = mode("BeamRemnants:companionPower");
 
   // Assume g(x) ~ (1-x)^power/x with a cut-off for low x.
-  gluonPower        = settings.parm("BeamRemnants:gluonPower");
-  xGluonCutoff      = settings.parm("BeamRemnants:xGluonCutoff");
+  gluonPower        = parm("BeamRemnants:gluonPower");
+  xGluonCutoff      = parm("BeamRemnants:xGluonCutoff");
 
   // Allow or not more than one valence quark to be kicked out.
-  allowJunction     = settings.flag("BeamRemnants:allowJunction");
+  allowJunction     = flag("BeamRemnants:allowJunction");
 
   // Choose whether to form a di-quark or
   // a junction with new colur reconnection scheme.
-  beamJunction       = settings.flag("beamRemnants:beamJunction");
+  beamJunction       = flag("beamRemnants:beamJunction");
 
   // Allow junctions in the outgoing colour state.
-  allowBeamJunctions = settings.flag("beamRemnants:allowBeamJunction");
+  allowBeamJunctions = flag("beamRemnants:allowBeamJunction");
 
   // For low-mass diffractive system kick out q/g = norm / mass^power.
-  pickQuarkNorm     = settings.parm("Diffraction:pickQuarkNorm");
-  pickQuarkPower    = settings.parm("Diffraction:pickQuarkPower");
+  pickQuarkNorm     = parm("Diffraction:pickQuarkNorm");
+  pickQuarkPower    = parm("Diffraction:pickQuarkPower");
 
   // Controls the amount of saturation in the new model.
-  beamSat           = settings.parm("BeamRemnants:saturation");
+  beamSat           = parm("BeamRemnants:saturation");
 
   // Width of primordial kT distribution in low-mass diffractive systems.
-  diffPrimKTwidth   = settings.parm("Diffraction:primKTwidth");
+  diffPrimKTwidth   = parm("Diffraction:primKTwidth");
 
   // Suppress large masses of beam remnant in low-mass diffractive systems.
-  diffLargeMassSuppress = settings.parm("Diffraction:largeMassSuppress");
+  diffLargeMassSuppress = parm("Diffraction:largeMassSuppress");
 
   // Check if ISR for photon collisions is applied and set pTmin.
-  doND              = settings.flag("SoftQCD:nonDiffractive");
-  doISR             = settings.flag("PartonLevel:ISR");
-  doMPI             = settings.flag("PartonLevel:MPI");
-  pTminISR          = settings.parm("SpaceShower:pTmin");
+  doND              = flag("SoftQCD:nonDiffractive");
+  doISR             = flag("PartonLevel:ISR");
+  doMPI             = flag("PartonLevel:MPI");
+  pTminISR          = parm("SpaceShower:pTmin");
 
   // Store info on the incoming beam.
   idBeam            = idIn;
@@ -255,7 +251,7 @@ void BeamParticle::initBeamKind() {
 
 // Initialize the photon beam with additional unresolved PDF pointer.
 
-void BeamParticle::initUnres(PDF* pdfUnresInPtr) {
+void BeamParticle::initUnres(PDFPtr pdfUnresInPtr) {
 
   // Set the pointer and check that pointer exists.
   pdfUnresBeamPtr = pdfUnresInPtr;

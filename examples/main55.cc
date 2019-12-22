@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: parton distribution; photon beam;
+
 // Example how to set up the simulation of isotropic QED gamma + gamma
 // production at 750 GeV by modifying gamma + gamma -> H -> gamma + gamma.
 // Contains a semirealistic analysis of associated jet production.
@@ -15,7 +17,7 @@ using namespace Pythia8;
 int main() {
 
   // Number of events.
-  int nEvent = 10000;
+  int nEvent = 5000;
 
   // Generator and collision energy.
   Pythia pythia;

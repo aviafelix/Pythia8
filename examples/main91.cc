@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: analysis; root;
+
 // This is a simple test program.
 // It studies the charged multiplicity distribution at the LHC.
 // Modified by Rene Brun, Axel Naumann and Bernhard Meirose

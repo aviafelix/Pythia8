@@ -3,6 +3,8 @@
 // PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
+// Keywords: biasing; second interaction;
+
 // Generate a predetermined second hard interaction.
 
 #include "Pythia8/Pythia.h"

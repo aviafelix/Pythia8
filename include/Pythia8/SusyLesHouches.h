@@ -141,7 +141,13 @@ namespace Pythia8 {
       };
     };
 
-    // Assignment
+    // Copy constructor.
+    LHmatrixBlock(const LHmatrixBlock& m) {
+      for (i=0;i<size;i++) for (j=0;j<=size;j++) entry[i][j] = m(i,j);
+      qDRbar = m.qDRbar;
+      initialized = m.initialized; }
+
+    // Assignment.
     LHmatrixBlock& operator=(const LHmatrixBlock& m) {
       if (this != &m) {
         for (i=0;i<size;i++) for (j=0;j<=size;j++) entry[i][j] = m(i,j);
@@ -216,7 +222,14 @@ namespace Pythia8 {
       };
     };
 
-    // Assignment
+    // Copy constructor.
+    LHtensor3Block(const LHtensor3Block& m) {
+      for (i=0;i<size;i++) for (j=0;j<=size;j++) for (k=0;k<=size;k++)
+        entry[i][j][k] = m(i,j,k);
+      qDRbar = m.qDRbar;
+      initialized = m.initialized; };
+
+    // Assignment.
     LHtensor3Block& operator=(const LHtensor3Block& m) {
       if (this != &m) {
         for (i=0;i<size;i++) for (j=0;j<=size;j++) for (k=0;k<=size;k++)

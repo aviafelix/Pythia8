@@ -49,7 +49,7 @@ private:
    vector<int> iColEnd, iAcolEnd, iColAndAcol;
 
   // Pointer to various information on the generation.
-  Info*          infoPtr;
+  Info* infoPtr;
 
 };
 

@@ -133,6 +133,10 @@ public:
   SingleClusterJet(Vec4 pJetIn = 0., int motherIn = 0) :
     pJet(pJetIn), mother(motherIn), daughter(0), multiplicity(1),
     isAssigned(false) {pAbs = max( PABSMIN, pJet.pAbs());}
+  SingleClusterJet(const SingleClusterJet& j) {
+    pJet = j.pJet;  mother = j.mother; daughter = j.daughter;
+    multiplicity = j.multiplicity; pAbs = j.pAbs;
+    isAssigned = j.isAssigned; }
   SingleClusterJet& operator=(const SingleClusterJet& j) { if (this != &j)
     { pJet = j.pJet;  mother = j.mother; daughter = j.daughter;
     multiplicity = j.multiplicity; pAbs = j.pAbs;

@@ -128,6 +128,29 @@ double Rndm::flat() {
 
 //--------------------------------------------------------------------------
 
+// Generate two random vectors according to the phase space distribution
+
+pair<Vec4, Vec4> Rndm::phaseSpace2(double eCM, double m1, double m2) {
+
+  // Calculate phase space configuration.
+  double pAbs = 0.5 * sqrtpos( (eCM - m1 - m2) * (eCM + m1 + m2)
+    * (eCM + m1 - m2) * (eCM - m1 + m2) ) / eCM;
+
+  // Isotropic angles give three-momentum.
+  double cosTheta = 2. * flat() - 1.;
+  double sinTheta = sqrt(1. - cosTheta*cosTheta);
+  double phi      = 2. * M_PI * flat();
+  double pX       = pAbs * sinTheta * cos(phi);
+  double pY       = pAbs * sinTheta * sin(phi);
+  double pZ       = pAbs * cosTheta;
+  double e1   = sqrt(pAbs * pAbs + m1 * m1);
+  double e2   = sqrt(pAbs * pAbs + m2 * m2);
+
+  return { Vec4(pX, pY, pZ, e1), Vec4(-pX, -pY, -pZ, e2) };
+}
+
+//--------------------------------------------------------------------------
+
 // Pick one option among  vector of (positive) probabilities.
 
 int Rndm::pick(const vector<double>& prob) {
